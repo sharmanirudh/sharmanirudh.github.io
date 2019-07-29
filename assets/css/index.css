@@ -870,11 +870,16 @@ header {
     background: #cacaca;
 }
 
-.marquee {
+#marquee {
     position: absolute;
     background-image: url(../images/faceprint/background.png);
     width: 100vw;
     height: 100vh;
+    animation: marquee 20s infinite linear;
+    -webkit-animation: marquee 20s infinite linear;
+}
+
+.marquee {
     animation: marquee 20s infinite linear;
     -webkit-animation: marquee 20s infinite linear;
 }
