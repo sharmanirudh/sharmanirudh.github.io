@@ -31,6 +31,18 @@ $(window).load(function() {
     moveHeadingParentStartCenter("hobbies_heading", "hobbies");
     moveHeadingParentStartCenter("contact_heading", "contact");
 
+    var coursesRequest = new XMLHttpRequest();
+    coursesRequest.open('GET', 'https://raw.githubusercontent.com/sharmanirudh/courses/master/courses.json');
+    coursesRequest.onload = function() {
+        var coursesData = JSON.parse(coursesRequest.responseText);
+        renderCourses(coursesData["courses"]);
+    };
+    coursesRequest.send();
+
+    // $(function () {
+    //     $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'});
+    // });
+
     $("#fullscreen_pacman_btn").css({"height": $(".github_button").first().outerHeight() + "px", 
                                 "width": Math.max($(".github_button").first().outerHeight(), $("#fullscreen_pacman_btn").outerWidth()) + "px"});
 
@@ -47,6 +59,32 @@ $(window).load(function() {
         $("#pacman_game_iframe").appendTo("#pacman_game_background");
         $("#game_fullscreen").css("visibility", "hidden");
     });
+
+    function renderCourses(data) {
+        var htmlString = "";
+        
+        for (var i = 0; i < data.length; i++) {
+            var statusBadgeClass = "success";
+            if (data[i]["status"] != "Completed")
+                statusBadgeClass = "warning";
+
+            htmlString += '\
+            <div class="card text-white col-10 col-sm-5 col-md-4 col-lg-3 mb-3 ml-sm-2 mr-sm-2"> \
+                <div class="card-body"> \
+                    <h6 class="card-title"><a href="' + data[i]["link"] + '" target="_blank">' + data[i]["name"] + '</a><span class="badge badge-' + statusBadgeClass + ' ml-1">' + data[i]["status"] + '</span></h6> \
+                    <p class="card-text">'
+
+            for (var j = 0; j < data[i]["skills_acquired"].length; j++) {
+                htmlString += '<span class="course_chip">' + data[i]["skills_acquired"][j] + '</span>';
+            }
+
+            htmlString +='\
+                    </p> \
+                </div> \
+            </div>'
+        }
+        $('#courses_container').html(htmlString);
+    }
 
     function aboutImg() {
         $('.about_img_2.bottom').on('click', function () {
@@ -70,6 +108,11 @@ $(window).load(function() {
             }
         };
         headerFixed();
+
+        $('.about_img_1').css({
+            width: 120 + $(window).scrollTop()/110 + "%",
+            bottom: 40 - $(window).scrollTop()/110 + "px"
+        })
 
         var offset = 50;
 
