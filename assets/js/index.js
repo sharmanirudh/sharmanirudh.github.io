@@ -5,6 +5,7 @@ $(window).ready(function() {
             $('header').toggleClass('header_bg');
             $('.nav-btn span').toggleClass('ion-ios-close ion-ios-menu');
             $('.menu_items').toggleClass('show');
+            $('.menu_items').css({top: $('#navbar').css('height')});
             $('body').toggleClass('no-scroll');
         });
         $('.menu_item').on('click', function () {
